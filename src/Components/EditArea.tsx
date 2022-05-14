@@ -35,8 +35,12 @@ export default function EditArea() {
         dispatch(setValue(event.currentTarget.value));
     };
 
-    const handleFocus = (event: FormEvent<HTMLTextAreaElement>) => {
-        console.log(event);
+    const logSelection = (event: FormEvent<HTMLTextAreaElement>) => {
+        const selection = {
+            start: event.currentTarget.selectionStart,
+            end: event.currentTarget.selectionEnd,
+        }
+        console.log(selection);
     }
 
     return (
@@ -44,8 +48,8 @@ export default function EditArea() {
             <p>Edit Area:</p>
             <StyledTextarea 
                 onChange={handleChange}
-                onFocus={handleFocus} 
                 value={markdown}
+                onClick={logSelection}
             />
         </div>
     );
