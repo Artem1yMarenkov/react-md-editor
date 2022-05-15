@@ -1,8 +1,8 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { getEdit } from "../Store/selectors";
-import { setValue } from "../Store/slices/editSlice";
+import { setMarkdownAsync } from "../Store/slices/editSlice";
 
 const StyledTextarea = styled.textarea`
     width: 100%;
@@ -27,29 +27,28 @@ const StyledTextarea = styled.textarea`
     }
 `;
 
+// TODO: Text-formatting options
 export default function EditArea() {
     const {markdown} = useAppSelector(getEdit);
     const dispatch = useAppDispatch();
 
-    const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
-        dispatch(setValue(event.currentTarget.value));
-    };
+    const [textareaValue, setTextareaValue] = useState<string>(markdown);
+    
+    useEffect(() => {
+        dispatch(setMarkdownAsync(textareaValue));
+    }, [textareaValue]);
 
-    const logSelection = (event: FormEvent<HTMLTextAreaElement>) => {
-        const selection = {
-            start: event.currentTarget.selectionStart,
-            end: event.currentTarget.selectionEnd,
-        }
-        console.log(selection);
-    }
+    const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
+        const {value} = event.currentTarget;
+        setTextareaValue(value);
+    };
 
     return (
         <div>
             <p>Edit Area:</p>
             <StyledTextarea 
                 onChange={handleChange}
-                value={markdown}
-                onClick={logSelection}
+                value={textareaValue}
             />
         </div>
     );

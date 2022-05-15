@@ -12,11 +12,12 @@ export const editSlice = createSlice({
     name: "edit",
     initialState,
     reducers: {
-        setValue: (state: EditSliceState, action: PayloadAction<string>) => {
+        setMarkdown: (state: EditSliceState, action: PayloadAction<string>) => {
             state.markdown = action.payload;
-        }
+        },
+        setMarkdownAsync: (state: EditSliceState, action: PayloadAction<string>) => {}
     }
 });
 
-export const { setValue } = editSlice.actions;
+export const { setMarkdown, setMarkdownAsync } = editSlice.actions;
 export default editSlice.reducer;
